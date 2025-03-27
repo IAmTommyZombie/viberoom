@@ -6,7 +6,7 @@ function ProfileForm({ onSave }) {
   const [videoFile, setVideoFile] = useState(null);
   const [location, setLocation] = useState("");
   const [rentRange, setRentRange] = useState("");
-  const [bedrooms, setBedrooms] = useState("");
+  const [age, setAge] = useState("");
   const [roommates, setRoommates] = useState("");
   const [bedtime, setBedtime] = useState("");
   const [workStyle, setWorkStyle] = useState("");
@@ -26,7 +26,7 @@ function ProfileForm({ onSave }) {
       vibeRatings: [],
       location,
       rentRange,
-      bedrooms: parseInt(bedrooms) || 1,
+      age: parseInt(age) || 25, // Default to 25 if invalid
       roommates: parseInt(roommates) || 1,
       bedtime,
       workStyle,
@@ -38,7 +38,7 @@ function ProfileForm({ onSave }) {
     setVideoFile(null);
     setLocation("");
     setRentRange("");
-    setBedrooms("");
+    setAge("");
     setRoommates("");
     setBedtime("");
     setWorkStyle("");
@@ -87,9 +87,9 @@ function ProfileForm({ onSave }) {
         />
         <input
           type="number"
-          value={bedrooms}
-          onChange={(e) => setBedrooms(e.target.value)}
-          placeholder="Number of Bedrooms"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          placeholder="Age"
           className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         <input

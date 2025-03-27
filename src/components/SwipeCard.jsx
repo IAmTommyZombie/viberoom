@@ -53,7 +53,7 @@ function SwipeCard({ user, onSwipe }) {
             <strong>Rent Range:</strong> {user.rentRange}
           </p>
           <p>
-            <strong>Bedrooms:</strong> {user.bedrooms}
+            <strong>Age:</strong> {user.age}
           </p>
           <p>
             <strong>Roommates:</strong> {user.roommates}

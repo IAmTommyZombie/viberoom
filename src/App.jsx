@@ -19,7 +19,7 @@ const mockUsers = [
     vibeRatings: [4, 5],
     location: "San Francisco, CA",
     rentRange: "$1000-$1500",
-    bedrooms: 2,
+    age: 28,
     roommates: 1,
     bedtime: "11 PM",
     workStyle: "Remote",
@@ -35,7 +35,7 @@ const mockUsers = [
     vibeRatings: [3, 4],
     location: "Austin, TX",
     rentRange: "$800-$1200",
-    bedrooms: 3,
+    age: 24,
     roommates: 2,
     bedtime: "1 AM",
     workStyle: "Hybrid",
@@ -51,7 +51,7 @@ const mockUsers = [
     vibeRatings: [5, 5],
     location: "Seattle, WA",
     rentRange: "$1200-$1800",
-    bedrooms: 1,
+    age: 30,
     roommates: 1,
     bedtime: "3 AM",
     workStyle: "Commutes",
@@ -67,7 +67,7 @@ const mockUsers = [
     vibeRatings: [4, 4],
     location: "New York, NY",
     rentRange: "$1500-$2000",
-    bedrooms: 2,
+    age: 26,
     roommates: 1,
     bedtime: "10 PM",
     workStyle: "Remote",
@@ -155,7 +155,7 @@ function App() {
 
   const handleViewProfile = (match) => {
     setSelectedMatch(match);
-    setView("fullProfile"); // New view mode for full profile
+    setView("fullProfile");
   };
 
   const enrichedUsers = users.map((user) => ({
@@ -282,7 +282,7 @@ function App() {
               <strong>Rent Range:</strong> {currentUser.rentRange}
             </p>
             <p>
-              <strong>Bedrooms:</strong> {currentUser.bedrooms}
+              <strong>Age:</strong> {currentUser.age}
             </p>
             <p>
               <strong>Roommates:</strong> {currentUser.roommates}
@@ -346,7 +346,7 @@ function App() {
               <strong>Rent Range:</strong> {selectedMatch.rentRange}
             </p>
             <p>
-              <strong>Bedrooms:</strong> {selectedMatch.bedrooms}
+              <strong>Age:</strong> {selectedMatch.age}
             </p>
             <p>
               <strong>Roommates:</strong> {selectedMatch.roommates}
