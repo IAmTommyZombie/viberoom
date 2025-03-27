@@ -1,0 +1,68 @@
+const mockUsers = [
+  {
+    id: 1,
+    name: "Alex",
+    bio: "Chill coder seeking a tidy roommate",
+    videoUrl:
+      "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4",
+    vibeRatings: [4, 5],
+    location: "San Francisco, CA",
+    rentRange: "$1000-$1500",
+    age: 28,
+    roommates: 1,
+    bedtime: "11 PM",
+    workStyle: "Remote",
+    foodPrefs: "Vegetarian",
+    parking: "Yes",
+  },
+  {
+    id: 2,
+    name: "Sam",
+    bio: "Pet lover and foodie",
+    videoUrl:
+      "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_2mb.mp4",
+    vibeRatings: [3, 4],
+    location: "Austin, TX",
+    rentRange: "$800-$1200",
+    age: 24,
+    roommates: 2,
+    bedtime: "1 AM",
+    workStyle: "Hybrid",
+    foodPrefs: "Omnivore",
+    parking: "No",
+  },
+  {
+    id: 3,
+    name: "Jordan",
+    bio: "Night owl gamer",
+    videoUrl:
+      "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_5mb.mp4",
+    vibeRatings: [5, 5],
+    location: "Seattle, WA",
+    rentRange: "$1200-$1800",
+    age: 30,
+    roommates: 1,
+    bedtime: "3 AM",
+    workStyle: "Commutes",
+    foodPrefs: "Pizza",
+    parking: "Yes",
+  },
+  {
+    id: 4,
+    name: "Taylor",
+    bio: "Music lover and early riser",
+    videoUrl:
+      "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_10mb.mp4",
+    vibeRatings: [4, 4],
+    location: "New York, NY",
+    rentRange: "$1500-$2000",
+    age: 26,
+    roommates: 1,
+    bedtime: "10 PM",
+    workStyle: "Remote",
+    foodPrefs: "Vegan",
+    parking: "No",
+  },
+];
+
+export default mockUsers;
