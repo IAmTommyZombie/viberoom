@@ -9,8 +9,18 @@ function ChatProfile({ match, onBack, onViewProfile }) {
         ).toFixed(1)
       : "N/A";
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hey, we matched!", fromMe: false },
-    { id: 2, text: "Yeah, your vibe’s awesome!", fromMe: true },
+    {
+      id: 1,
+      text: "Hey, we matched!",
+      fromMe: false,
+      timestamp: Date.now() - 120000,
+    },
+    {
+      id: 2,
+      text: "Yeah, your vibe’s awesome!",
+      fromMe: true,
+      timestamp: Date.now() - 60000,
+    },
   ]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -19,16 +29,33 @@ function ChatProfile({ match, onBack, onViewProfile }) {
     if (newMessage.trim()) {
       setMessages([
         ...messages,
-        { id: Date.now(), text: newMessage, fromMe: true },
+        {
+          id: Date.now(),
+          text: newMessage,
+          fromMe: true,
+          timestamp: Date.now(),
+        },
       ]);
       setNewMessage("");
       setTimeout(() => {
         setMessages((prev) => [
           ...prev,
-          { id: Date.now(), text: "Thanks! You too!", fromMe: false },
+          {
+            id: Date.now(),
+            text: "Thanks! You too!",
+            fromMe: false,
+            timestamp: Date.now(),
+          },
         ]);
       }, 1000);
     }
+  };
+
+  const formatTimestamp = (timestamp) => {
+    const diff = (Date.now() - timestamp) / 1000 / 60; // Minutes ago
+    if (diff < 1) return "Just now";
+    if (diff < 60) return `${Math.floor(diff)} min ago`;
+    return `${Math.floor(diff / 60)} hr ago`;
   };
 
   return (
@@ -64,7 +91,10 @@ function ChatProfile({ match, onBack, onViewProfile }) {
               msg.fromMe ? "bg-purple-100 ml-auto" : "bg-gray-100 mr-auto"
             } max-w-[70%]`}
           >
-            {msg.text}
+            <p>{msg.text}</p>
+            <p className="text-xs text-gray-400">
+              {formatTimestamp(msg.timestamp)}
+            </p>
           </div>
         ))}
       </div>

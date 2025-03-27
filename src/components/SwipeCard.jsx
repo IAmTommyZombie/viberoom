@@ -28,13 +28,31 @@ function SwipeCard({ user, onSwipe }) {
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="w-80 bg-white shadow-lg rounded-lg p-4"
+        className="w-80 bg-white shadow-md rounded-xl p-4 border border-gray-200 hover:shadow-lg"
       >
-        <video
-          src={user.videoUrl}
-          controls
-          className="w-full h-48 rounded mb-2"
-        />
+        <div className="relative">
+          <video
+            src={user.videoUrl}
+            controls
+            className="w-full h-48 rounded-lg mb-2"
+          />
+          <motion.div
+            className="absolute top-2 left-2 text-2xl font-bold"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: user.lastSwipe === "left" ? 1 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <span className="text-red-500">Passed</span>
+          </motion.div>
+          <motion.div
+            className="absolute top-2 right-2 text-2xl font-bold"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: user.lastSwipe === "right" ? 1 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <span className="text-green-500">Liked</span>
+          </motion.div>
+        </div>
         <div className="flex justify-between items-center mb-2">
           <h3 className="text-lg font-bold">{user.name}</h3>
           <span className="text-sm text-gray-500 flex items-center">
@@ -74,13 +92,13 @@ function SwipeCard({ user, onSwipe }) {
         <div className="flex justify-between mt-4">
           <button
             onClick={handlePass}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+            className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition-colors"
           >
             Pass
           </button>
           <button
             onClick={handleInterested}
-            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+            className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors"
           >
             Interested
           </button>

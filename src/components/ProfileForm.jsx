@@ -1,55 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function ProfileForm({ onSave }) {
-  const [name, setName] = useState("");
-  const [bio, setBio] = useState("");
+function ProfileForm({ onSave, initialData }) {
+  const [name, setName] = useState(initialData?.name || "");
+  const [bio, setBio] = useState(initialData?.bio || "");
   const [videoFile, setVideoFile] = useState(null);
-  const [location, setLocation] = useState("");
-  const [rentRange, setRentRange] = useState("");
-  const [age, setAge] = useState("");
-  const [roommates, setRoommates] = useState("");
-  const [bedtime, setBedtime] = useState("");
-  const [workStyle, setWorkStyle] = useState("");
-  const [foodPrefs, setFoodPrefs] = useState("");
-  const [parking, setParking] = useState("");
+  const [location, setLocation] = useState(initialData?.location || "");
+  const [rentRange, setRentRange] = useState(initialData?.rentRange || "");
+  const [age, setAge] = useState(initialData?.age || "");
+  const [roommates, setRoommates] = useState(initialData?.roommates || "");
+  const [bedtime, setBedtime] = useState(initialData?.bedtime || "");
+  const [workStyle, setWorkStyle] = useState(initialData?.workStyle || "");
+  const [foodPrefs, setFoodPrefs] = useState(initialData?.foodPrefs || "");
+  const [parking, setParking] = useState(initialData?.parking || "");
+
+  useEffect(() => {
+    if (initialData) {
+      setName(initialData.name);
+      setBio(initialData.bio);
+      setLocation(initialData.location);
+      setRentRange(initialData.rentRange);
+      setAge(initialData.age);
+      setRoommates(initialData.roommates);
+      setBedtime(initialData.bedtime);
+      setWorkStyle(initialData.workStyle);
+      setFoodPrefs(initialData.foodPrefs);
+      setParking(initialData.parking);
+    }
+  }, [initialData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const videoUrl = videoFile
       ? URL.createObjectURL(videoFile)
-      : "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4";
+      : initialData?.videoUrl ||
+        "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4";
     onSave({
       name,
       bio,
       videoUrl,
-      id: Date.now(),
-      vibeRatings: [],
+      id: initialData?.id || Date.now(),
+      vibeRatings: initialData?.vibeRatings || [],
       location,
       rentRange,
-      age: parseInt(age) || 25, // Default to 25 if invalid
+      age: parseInt(age) || 25,
       roommates: parseInt(roommates) || 1,
       bedtime,
       workStyle,
       foodPrefs,
       parking,
     });
-    setName("");
-    setBio("");
-    setVideoFile(null);
-    setLocation("");
-    setRentRange("");
-    setAge("");
-    setRoommates("");
-    setBedtime("");
-    setWorkStyle("");
-    setFoodPrefs("");
-    setParking("");
   };
 
   return (
-    <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+    <div className="w-full bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-purple-600 mb-4">
-        Create Your Profile
+        {initialData ? "Edit Profile" : "Create Your Profile"}
       </h2>
       <form onSubmit={handleSubmit}>
         <input

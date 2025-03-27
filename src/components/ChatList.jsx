@@ -15,7 +15,7 @@ function ChatList({ matches, onSelectMatch }) {
         matches.map((match) => (
           <div
             key={match.id}
-            onClick={() => onSelectMatch(match)} // Ensure this fires
+            onClick={() => onSelectMatch(match)} 
             className="bg-white p-4 rounded-lg shadow-lg mb-2 cursor-pointer hover:bg-gray-100"
           >
             <h3 className="font-bold">{match.name}</h3>
