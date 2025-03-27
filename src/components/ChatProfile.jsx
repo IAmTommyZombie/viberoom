@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function ChatProfile({ match, onBack, onViewProfile }) {
+function ChatProfile({ match, onBack, onViewProfile, onMarkRead }) {
   const vibeScore =
     match.vibeRatings.length > 0
       ? (
@@ -14,15 +14,24 @@ function ChatProfile({ match, onBack, onViewProfile }) {
       text: "Hey, we matched!",
       fromMe: false,
       timestamp: Date.now() - 120000,
+      unread: true,
     },
     {
       id: 2,
       text: "Yeah, your vibe’s awesome!",
       fromMe: true,
       timestamp: Date.now() - 60000,
+      unread: false,
     },
   ]);
   const [newMessage, setNewMessage] = useState("");
+
+  useEffect(() => {
+    // Mark messages as read when the chat is opened
+    const updatedMessages = messages.map((msg) => ({ ...msg, unread: false }));
+    setMessages(updatedMessages);
+    onMarkRead(match.id); // Notify parent to update unread count
+  }, [match.id, onMarkRead]);
 
   const handleSend = (e) => {
     e.preventDefault();
@@ -34,6 +43,7 @@ function ChatProfile({ match, onBack, onViewProfile }) {
           text: newMessage,
           fromMe: true,
           timestamp: Date.now(),
+          unread: false,
         },
       ]);
       setNewMessage("");
@@ -45,6 +55,7 @@ function ChatProfile({ match, onBack, onViewProfile }) {
             text: "Thanks! You too!",
             fromMe: false,
             timestamp: Date.now(),
+            unread: true,
           },
         ]);
       }, 1000);

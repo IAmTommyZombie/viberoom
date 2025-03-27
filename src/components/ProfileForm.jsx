@@ -7,6 +7,7 @@ function ProfileForm({ onSave, initialData }) {
   const [location, setLocation] = useState(initialData?.location || "");
   const [rentRange, setRentRange] = useState(initialData?.rentRange || "");
   const [age, setAge] = useState(initialData?.age || "");
+  const [gender, setGender] = useState(initialData?.gender || "");
   const [roommates, setRoommates] = useState(initialData?.roommates || "");
   const [bedtime, setBedtime] = useState(initialData?.bedtime || "");
   const [workStyle, setWorkStyle] = useState(initialData?.workStyle || "");
@@ -20,6 +21,7 @@ function ProfileForm({ onSave, initialData }) {
       setLocation(initialData.location);
       setRentRange(initialData.rentRange);
       setAge(initialData.age);
+      setGender(initialData.gender);
       setRoommates(initialData.roommates);
       setBedtime(initialData.bedtime);
       setWorkStyle(initialData.workStyle);
@@ -27,6 +29,19 @@ function ProfileForm({ onSave, initialData }) {
       setParking(initialData.parking);
     }
   }, [initialData]);
+
+  const genderOptions = [
+    "Male",
+    "Female",
+    "Non-binary",
+    "Genderqueer",
+    "Genderfluid",
+    "Agender",
+    "Bigender",
+    "Two-Spirit",
+    "Other",
+    "Prefer not to say",
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,6 +58,7 @@ function ProfileForm({ onSave, initialData }) {
       location,
       rentRange,
       age: parseInt(age) || 25,
+      gender: gender || "Prefer not to say",
       roommates: parseInt(roommates) || 1,
       bedtime,
       workStyle,
@@ -97,6 +113,20 @@ function ProfileForm({ onSave, initialData }) {
           placeholder="Age"
           className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
+        <select
+          value={gender}
+          onChange={(e) => setGender(e.target.value)}
+          className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        >
+          <option value="" disabled>
+            Select Gender
+          </option>
+          {genderOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
         <input
           type="number"
           value={roommates}

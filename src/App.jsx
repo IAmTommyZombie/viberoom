@@ -21,7 +21,8 @@ function App() {
   const [showMatch, setShowMatch] = useState(false);
   const [view, setView] = useState("swipe");
   const [selectedMatch, setSelectedMatch] = useState(null);
-  const [isEditing, setIsEditing] = useState(false); // New state for edit mode
+  const [isEditing, setIsEditing] = useState(false);
+  const [unreadCounts, setUnreadCounts] = useState({}); // Track unread messages per match
 
   const onSwipe = (direction, userId) => {
     setLastDirection(direction);
@@ -37,7 +38,9 @@ function App() {
     );
     setShowRating(true);
     if (direction === "right" && Math.random() > 0.5) {
-      setMatches([...matches, swipedUser]);
+      const newMatch = { ...swipedUser, unread: 1 }; // Start with 1 unread message
+      setMatches([...matches, newMatch]);
+      setUnreadCounts((prev) => ({ ...prev, [swipedUser.id]: 1 }));
       setShowMatch(true);
       setTimeout(() => setShowMatch(false), 2500);
     }
@@ -74,15 +77,16 @@ function App() {
   const handleSaveProfile = (profile) => {
     setCurrentUser(profile);
     setUsers((prev) => {
-      const filtered = prev.filter((user) => user.id !== profile.id); // Replace if editing
+      const filtered = prev.filter((user) => user.id !== profile.id);
       return [profile, ...filtered];
     });
-    setIsEditing(false); // Exit edit mode
+    setIsEditing(false);
   };
 
   const resetCards = () => {
     setUsers(mockUsers);
     setMatches([]);
+    setUnreadCounts({});
     setLastDirection("");
   };
 
@@ -91,6 +95,7 @@ function App() {
     setCurrentUser(null);
     setUsers(mockUsers);
     setMatches([]);
+    setUnreadCounts({});
     setView("swipe");
   };
 
@@ -108,6 +113,15 @@ function App() {
     setIsEditing(true);
   };
 
+  const handleMarkRead = (matchId) => {
+    setUnreadCounts((prev) => ({ ...prev, [matchId]: 0 }));
+  };
+
+  const totalUnread = Object.values(unreadCounts).reduce(
+    (sum, count) => sum + count,
+    0
+  );
+
   const enrichedUsers = users.map((user) => ({
     ...user,
     vibeScore:
@@ -123,7 +137,7 @@ function App() {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-200 to-blue-200 flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
         <h1 className="text-4xl font-bold text-purple-600 mb-8">VibeRoom</h1>
         <ProfileForm onSave={handleSaveProfile} />
       </div>
@@ -145,12 +159,19 @@ function App() {
         >
           Me
         </button>
-        <button
-          onClick={() => setView("chats")}
-          className="text-purple-600 font-semibold hover:text-purple-800"
-        >
-          Chats
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => setView("chats")}
+            className="text-purple-600 font-semibold hover:text-purple-800"
+          >
+            Chats
+          </button>
+          {totalUnread > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              {totalUnread}
+            </span>
+          )}
+        </div>
         <button
           onClick={handleLogout}
           className="text-red-500 font-semibold hover:text-red-700"
@@ -158,13 +179,13 @@ function App() {
           Logout
         </button>
       </div>
-      <div className="mt-16 w-full max-w-md">
+      <div className="mt-16 w-full max-w-md flex flex-col overflow-y-auto">
         {view === "swipe" && (
-          <>
+          <div className="flex flex-col items-center">
             <h1 className="text-4xl font-bold text-purple-600 mb-8 text-center">
               VibeRoom
             </h1>
-            <div className="relative w-full h-96">
+            <div className="w-full mb-8">
               {enrichedUsers.length > 0 ? (
                 enrichedUsers.map((user) => (
                   <SwipeCard key={user.id} user={user} onSwipe={onSwipe} />
@@ -182,7 +203,7 @@ function App() {
               )}
             </div>
             {lastDirection && enrichedUsers.length > 0 && (
-              <p className="mt-4 text-gray-500 text-center">
+              <p className="mb-4 text-gray-500 text-center">
                 Swiped {lastDirection}
               </p>
             )}
@@ -198,7 +219,7 @@ function App() {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
-                className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+                className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20"
               >
                 <div className="bg-white p-8 rounded-lg shadow-lg text-center">
                   <Confetti
@@ -216,7 +237,7 @@ function App() {
               </motion.div>
             )}
             <Matches matches={matches} />
-          </>
+          </div>
         )}
 
         {view === "profile" && (
@@ -247,6 +268,9 @@ function App() {
                   </p>
                   <p>
                     <strong>Age:</strong> {currentUser.age}
+                  </p>
+                  <p>
+                    <strong>Gender:</strong> {currentUser.gender}
                   </p>
                   <p>
                     <strong>Roommates:</strong> {currentUser.roommates}
@@ -283,6 +307,7 @@ function App() {
             match={selectedMatch}
             onBack={() => setView("chats")}
             onViewProfile={handleViewProfile}
+            onMarkRead={handleMarkRead}
           />
         )}
         {view === "fullProfile" && selectedMatch && (
@@ -319,6 +344,9 @@ function App() {
               </p>
               <p>
                 <strong>Age:</strong> {selectedMatch.age}
+              </p>
+              <p>
+                <strong>Gender:</strong> {selectedMatch.gender}
               </p>
               <p>
                 <strong>Roommates:</strong> {selectedMatch.roommates}

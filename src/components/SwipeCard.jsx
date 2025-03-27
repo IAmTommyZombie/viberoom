@@ -28,7 +28,7 @@ function SwipeCard({ user, onSwipe }) {
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="w-80 bg-white shadow-md rounded-xl p-4 border border-gray-200 hover:shadow-lg"
+        className="w-full bg-white shadow-md rounded-xl p-4 border border-gray-200 hover:shadow-lg"
       >
         <div className="relative">
           <video
@@ -72,6 +72,9 @@ function SwipeCard({ user, onSwipe }) {
           </p>
           <p>
             <strong>Age:</strong> {user.age}
+          </p>
+          <p>
+            <strong>Gender:</strong> {user.gender}
           </p>
           <p>
             <strong>Roommates:</strong> {user.roommates}
