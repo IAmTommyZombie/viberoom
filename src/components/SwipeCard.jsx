@@ -7,8 +7,8 @@ function SwipeCard({ user, onSwipe }) {
   const vibeScore = user.vibeScore || "N/A";
 
   const handlePass = async () => {
-    await cardRef.current.swipe("left"); // Ensure animation completes
-    onSwipe("left", user.id); // Call after swipe
+    await cardRef.current.swipe("left");
+    onSwipe("left", user.id);
   };
 
   const handleInterested = async () => {
@@ -22,7 +22,7 @@ function SwipeCard({ user, onSwipe }) {
       key={user.id}
       onSwipe={(dir) => onSwipe(dir, user.id)}
       className="absolute"
-      preventSwipe={["up", "down"]} // Lock to left/right only
+      preventSwipe={["up", "down"]}
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
@@ -44,7 +44,33 @@ function SwipeCard({ user, onSwipe }) {
             )}
           </span>
         </div>
-        <p className="text-gray-600">{user.bio}</p>
+        <p className="text-gray-600 mb-2">{user.bio}</p>
+        <div className="text-sm text-gray-500 space-y-1">
+          <p>
+            <strong>Location:</strong> {user.location}
+          </p>
+          <p>
+            <strong>Rent Range:</strong> {user.rentRange}
+          </p>
+          <p>
+            <strong>Bedrooms:</strong> {user.bedrooms}
+          </p>
+          <p>
+            <strong>Roommates:</strong> {user.roommates}
+          </p>
+          <p>
+            <strong>Bedtime:</strong> {user.bedtime}
+          </p>
+          <p>
+            <strong>Work Style:</strong> {user.workStyle}
+          </p>
+          <p>
+            <strong>Food Prefs:</strong> {user.foodPrefs}
+          </p>
+          <p>
+            <strong>Parking:</strong> {user.parking}
+          </p>
+        </div>
         <div className="flex justify-between mt-4">
           <button
             onClick={handlePass}

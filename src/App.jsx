@@ -17,6 +17,14 @@ const mockUsers = [
     videoUrl:
       "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4",
     vibeRatings: [4, 5],
+    location: "San Francisco, CA",
+    rentRange: "$1000-$1500",
+    bedrooms: 2,
+    roommates: 1,
+    bedtime: "11 PM",
+    workStyle: "Remote",
+    foodPrefs: "Vegetarian",
+    parking: "Yes",
   },
   {
     id: 2,
@@ -25,6 +33,14 @@ const mockUsers = [
     videoUrl:
       "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_2mb.mp4",
     vibeRatings: [3, 4],
+    location: "Austin, TX",
+    rentRange: "$800-$1200",
+    bedrooms: 3,
+    roommates: 2,
+    bedtime: "1 AM",
+    workStyle: "Hybrid",
+    foodPrefs: "Omnivore",
+    parking: "No",
   },
   {
     id: 3,
@@ -33,6 +49,14 @@ const mockUsers = [
     videoUrl:
       "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_5mb.mp4",
     vibeRatings: [5, 5],
+    location: "Seattle, WA",
+    rentRange: "$1200-$1800",
+    bedrooms: 1,
+    roommates: 1,
+    bedtime: "3 AM",
+    workStyle: "Commutes",
+    foodPrefs: "Pizza",
+    parking: "Yes",
   },
   {
     id: 4,
@@ -41,6 +65,14 @@ const mockUsers = [
     videoUrl:
       "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_10mb.mp4",
     vibeRatings: [4, 4],
+    location: "New York, NY",
+    rentRange: "$1500-$2000",
+    bedrooms: 2,
+    roommates: 1,
+    bedtime: "10 PM",
+    workStyle: "Remote",
+    foodPrefs: "Vegan",
+    parking: "No",
   },
 ];
 
@@ -118,7 +150,12 @@ function App() {
 
   const handleSelectMatch = (match) => {
     setSelectedMatch(match);
-    setView("chatProfile"); // Switch to profile view
+    setView("chatProfile");
+  };
+
+  const handleViewProfile = (match) => {
+    setSelectedMatch(match);
+    setView("fullProfile"); // New view mode for full profile
   };
 
   const enrichedUsers = users.map((user) => ({
@@ -233,10 +270,36 @@ function App() {
           <video
             src={currentUser.videoUrl}
             controls
-            className="w-full h-48 rounded mb-2"
+            className="w-full h-48 rounded mb-4"
           />
           <h3 className="text-lg font-bold">{currentUser.name}</h3>
-          <p className="text-gray-600">{currentUser.bio}</p>
+          <p className="text-gray-600 mb-2">{currentUser.bio}</p>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <p>
+              <strong>Location:</strong> {currentUser.location}
+            </p>
+            <p>
+              <strong>Rent Range:</strong> {currentUser.rentRange}
+            </p>
+            <p>
+              <strong>Bedrooms:</strong> {currentUser.bedrooms}
+            </p>
+            <p>
+              <strong>Roommates:</strong> {currentUser.roommates}
+            </p>
+            <p>
+              <strong>Bedtime:</strong> {currentUser.bedtime}
+            </p>
+            <p>
+              <strong>Work Style:</strong> {currentUser.workStyle}
+            </p>
+            <p>
+              <strong>Food Prefs:</strong> {currentUser.foodPrefs}
+            </p>
+            <p>
+              <strong>Parking:</strong> {currentUser.parking}
+            </p>
+          </div>
         </div>
       )}
 
@@ -244,7 +307,64 @@ function App() {
         <ChatList matches={matches} onSelectMatch={handleSelectMatch} />
       )}
       {view === "chatProfile" && selectedMatch && (
-        <ChatProfile match={selectedMatch} onBack={() => setView("chats")} />
+        <ChatProfile
+          match={selectedMatch}
+          onBack={() => setView("chats")}
+          onViewProfile={handleViewProfile}
+        />
+      )}
+      {view === "fullProfile" && selectedMatch && (
+        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+          <button
+            onClick={() => setView("chatProfile")}
+            className="text-purple-600 mb-4"
+          >
+            Back to Chat
+          </button>
+          <video
+            src={selectedMatch.videoUrl}
+            controls
+            className="w-full h-48 rounded mb-4"
+          />
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-lg font-bold">{selectedMatch.name}</h3>
+            <span className="text-sm text-gray-500 flex items-center">
+              {selectedMatch.vibeScore === "N/A"
+                ? "No Ratings"
+                : `${selectedMatch.vibeScore}/5`}
+              {selectedMatch.vibeScore !== "N/A" && (
+                <span className="ml-1 text-xl gradient-star">★</span>
+              )}
+            </span>
+          </div>
+          <p className="text-gray-600 mb-2">{selectedMatch.bio}</p>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <p>
+              <strong>Location:</strong> {selectedMatch.location}
+            </p>
+            <p>
+              <strong>Rent Range:</strong> {selectedMatch.rentRange}
+            </p>
+            <p>
+              <strong>Bedrooms:</strong> {selectedMatch.bedrooms}
+            </p>
+            <p>
+              <strong>Roommates:</strong> {selectedMatch.roommates}
+            </p>
+            <p>
+              <strong>Bedtime:</strong> {selectedMatch.bedtime}
+            </p>
+            <p>
+              <strong>Work Style:</strong> {selectedMatch.workStyle}
+            </p>
+            <p>
+              <strong>Food Prefs:</strong> {selectedMatch.foodPrefs}
+            </p>
+            <p>
+              <strong>Parking:</strong> {selectedMatch.parking}
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );

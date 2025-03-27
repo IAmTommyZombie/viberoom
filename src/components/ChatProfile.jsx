@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function ChatProfile({ match, onBack }) {
+function ChatProfile({ match, onBack, onViewProfile }) {
   const vibeScore =
     match.vibeRatings.length > 0
       ? (
@@ -22,7 +22,6 @@ function ChatProfile({ match, onBack }) {
         { id: Date.now(), text: newMessage, fromMe: true },
       ]);
       setNewMessage("");
-      // Mock reply after 1s
       setTimeout(() => {
         setMessages((prev) => [
           ...prev,
@@ -38,7 +37,12 @@ function ChatProfile({ match, onBack }) {
         Back to Chats
       </button>
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-bold">{match.name}</h3>
+        <h3
+          onClick={() => onViewProfile(match)}
+          className="text-lg font-bold text-purple-600 cursor-pointer hover:underline"
+        >
+          {match.name}
+        </h3>
         <span className="text-sm text-gray-500 flex items-center">
           {vibeScore === "N/A" ? "No Ratings" : `${vibeScore}/5`}
           {vibeScore !== "N/A" && (
