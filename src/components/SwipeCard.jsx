@@ -1,14 +1,28 @@
+import { useRef } from "react";
 import TinderCard from "react-tinder-card";
 import { motion } from "framer-motion";
 
 function SwipeCard({ user, onSwipe }) {
+  const cardRef = useRef(null);
   const vibeScore = user.vibeScore || "N/A";
+
+  const handlePass = async () => {
+    await cardRef.current.swipe("left"); // Ensure animation completes
+    onSwipe("left", user.id); // Call after swipe
+  };
+
+  const handleInterested = async () => {
+    await cardRef.current.swipe("right");
+    onSwipe("right", user.id);
+  };
 
   return (
     <TinderCard
+      ref={cardRef}
       key={user.id}
       onSwipe={(dir) => onSwipe(dir, user.id)}
       className="absolute"
+      preventSwipe={["up", "down"]} // Lock to left/right only
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
@@ -32,10 +46,16 @@ function SwipeCard({ user, onSwipe }) {
         </div>
         <p className="text-gray-600">{user.bio}</p>
         <div className="flex justify-between mt-4">
-          <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+          <button
+            onClick={handlePass}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+          >
             Pass
           </button>
-          <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+          <button
+            onClick={handleInterested}
+            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+          >
             Interested
           </button>
         </div>
