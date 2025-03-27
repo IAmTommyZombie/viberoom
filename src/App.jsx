@@ -1,5 +1,6 @@
 import { useState } from "react";
-import TinderCard from "react-tinder-card";
+import SwipeCard from "./components/SwipeCard";
+import RatingModal from "./components/RatingModal";
 
 const mockUsers = [
   {
@@ -28,10 +29,24 @@ const mockUsers = [
 function App() {
   const [users, setUsers] = useState(mockUsers);
   const [lastDirection, setLastDirection] = useState("");
+  const [showRating, setShowRating] = useState(false);
+  const [lastSwipedUser, setLastSwipedUser] = useState(null);
 
   const onSwipe = (direction, userId) => {
     setLastDirection(direction);
+    const swipedUser = users.find((user) => user.id === userId);
+    setLastSwipedUser(swipedUser);
     setUsers(users.filter((user) => user.id !== userId));
+    setShowRating(true);
+  };
+
+  const onRate = (rating) => {
+    console.log(`Rated ${lastSwipedUser.name} ${rating}/5`);
+    setShowRating(false);
+  };
+
+  const onCloseRating = () => {
+    setShowRating(false);
   };
 
   return (
@@ -39,33 +54,18 @@ function App() {
       <h1 className="text-4xl font-bold text-purple-600 mb-8">VibeRoom</h1>
       <div className="relative w-80 h-96">
         {users.map((user) => (
-          <TinderCard
-            key={user.id}
-            onSwipe={(dir) => onSwipe(dir, user.id)}
-            className="absolute"
-          >
-            <div className="w-80 bg-white shadow-lg rounded-lg p-4">
-              <video
-                src={user.videoUrl}
-                controls
-                className="w-full h-48 rounded mb-2"
-              />
-              <h3 className="text-lg font-bold">{user.name}</h3>
-              <p className="text-gray-600">{user.bio}</p>
-              <div className="flex justify-between mt-4">
-                <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                  Pass
-                </button>
-                <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                  Interested
-                </button>
-              </div>
-            </div>
-          </TinderCard>
+          <SwipeCard key={user.id} user={user} onSwipe={onSwipe} />
         ))}
       </div>
       {lastDirection && (
         <p className="mt-4 text-gray-500">Swiped {lastDirection}</p>
+      )}
+      {showRating && (
+        <RatingModal
+          user={lastSwipedUser}
+          onRate={onRate}
+          onClose={onCloseRating}
+        />
       )}
     </div>
   );
