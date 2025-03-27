@@ -1,4 +1,5 @@
-import { useState } from "react"; // Add this!
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -6,12 +7,16 @@ function Login({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Mock login - just proceed for now
     onLogin({ email });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-200 to-blue-200 flex items-center justify-center p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-gradient-to-b from-purple-200 to-blue-200 flex items-center justify-center p-4"
+    >
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm"
@@ -40,7 +45,7 @@ function Login({ onLogin }) {
           Log In
         </button>
       </form>
-    </div>
+    </motion.div>
   );
 }
 

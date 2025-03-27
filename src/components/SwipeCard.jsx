@@ -1,7 +1,7 @@
 import TinderCard from "react-tinder-card";
+import { motion } from "framer-motion";
 
 function SwipeCard({ user, onSwipe }) {
-  // Mock vibe score for now - we'll calculate this later
   const vibeScore = user.vibeScore || "N/A";
 
   return (
@@ -10,7 +10,12 @@ function SwipeCard({ user, onSwipe }) {
       onSwipe={(dir) => onSwipe(dir, user.id)}
       className="absolute"
     >
-      <div className="w-80 bg-white shadow-lg rounded-lg p-4">
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="w-80 bg-white shadow-lg rounded-lg p-4"
+      >
         <video
           src={user.videoUrl}
           controls
@@ -21,7 +26,7 @@ function SwipeCard({ user, onSwipe }) {
           <span className="text-sm text-gray-500 flex items-center">
             {vibeScore === "N/A" ? "No Ratings" : `${vibeScore}/5`}
             {vibeScore !== "N/A" && (
-              <span className="ml-1 text-yellow-400">★</span>
+              <span className="ml-1 text-xl gradient-star">★</span>
             )}
           </span>
         </div>
@@ -34,7 +39,7 @@ function SwipeCard({ user, onSwipe }) {
             Interested
           </button>
         </div>
-      </div>
+      </motion.div>
     </TinderCard>
   );
 }
